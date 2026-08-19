@@ -30,7 +30,8 @@ class Solution:
 
         sigmoid = 1 / (1 + e)
 
-        dL_dw = np.round((-1 * np.square(sigmoid) * e * x) * (y_true - sigmoid), 5)
-        dL_db = np.round((-1 * np.square(sigmoid) * e) * (y_true - sigmoid), 5)
+        dL_db = np.round((np.square(sigmoid) * e) * (sigmoid - y_true), 5)
+
+        dL_dw = np.round((np.square(sigmoid) * e * x) * (sigmoid - y_true), 5)
 
         return dL_dw, dL_db
