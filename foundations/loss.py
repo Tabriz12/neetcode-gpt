@@ -7,27 +7,24 @@ class Solution:
     def binary_cross_entropy(self, y_true: NDArray[np.float64], y_pred: NDArray[np.float64]) -> float:
         # y_true: true labels (0 or 1)
         # y_pred: predicted probabilities
-        # Hint: add a small epsilon (1e-7) to y_pred to avoid log(0)
+        # Hint: clip y_pred to [1e-7, 1 - 1e-7] to avoid log(0)
         # return round(your_answer, 4)
 
-        '''
+        y_pred_norm, size = np.clip(y_pred, 1e-7, 1-(1e-7)), y_pred.shape[0]
+        loss = -(np.log(y_pred_norm) @ y_true + np.log(1-y_pred_norm) @ (1-y_true))/size
 
-        [1, 0 , 0 , 1]
-
-        [0.8, 0.3, 0.9, 1]
-
-        '''
-        
-        loss = -np.sum(y_true * np.log(y_pred + 1e-7) + (1-y_true) * np.log(1-(y_pred+1e-7))) / y_true.size
         return np.round(loss,4)
+        
+        
 
     def categorical_cross_entropy(self, y_true: NDArray[np.float64], y_pred: NDArray[np.float64]) -> float:
         # y_true: one-hot encoded true labels (shape: n_samples x n_classes)
         # y_pred: predicted probabilities (shape: n_samples x n_classes)
-        # Hint: add a small epsilon (1e-7) to y_pred to avoid log(0)
+        # Hint: clip y_pred to [1e-7, 1 - 1e-7] to avoid log(0)
         # return round(your_answer, 4)
-        
-        loss = -np.sum(y_true * np.log(y_pred + 1e-7)) / y_true.shape[0]
+        y_pred_norm, size = np.clip(y_pred, 1e-7, 1-(1e-7)), y_true.shape[0]
+
+        loss = -np.sum(y_true * np.log(y_pred_norm))/size
+
 
         return np.round(loss,4)
-        
